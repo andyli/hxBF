@@ -1,0 +1,6 @@
+<project name="hxBF" url="http://github.com/andyli/hxBF" license="BSD">
+    <user name="andyli"/>
+    <tag v="cross"/>
+    <description>BrainFuck interpreter written in haXe.</description>
+    <version name="1.0">First release.</version>
+</project>

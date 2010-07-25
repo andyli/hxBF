@@ -1,0 +1,42 @@
+-main Test
+-swf bin/Test.swf
+-swf-version 10
+
+--next
+-main Test
+-neko bin/Test.n
+
+--next
+-main Test
+-cpp bin
+
+--next
+-main Test
+-js bin/Test.js
+
+--next
+-main Test
+-php bin/php
+
+--next
+-cmd echo "----------------------------------------"
+-cmd echo "Test C++!"
+-cmd ./bin/Test
+-cmd echo "----------------------------------------"
+-cmd echo "Test Neko!"
+-cmd neko bin/Test
+-cmd echo "----------------------------------------"
+-cmd echo "Test Flash!"
+-cmd open bin/Test.swf
+-cmd echo "----------------------------------------"
+-cmd echo "Test JS!"
+-cmd cp bin/Test.js /Library/WebServer/Documents/TestJS/Test.js
+-cmd echo "Open in browser..."
+-cmd open http://localhost/TestJS
+-cmd echo "----------------------------------------"
+-cmd echo "Test PHP!"
+-cmd rm -r /Library/WebServer/Documents/TestPHP
+-cmd cp -r bin/php /Library/WebServer/Documents/TestPHP
+-cmd echo "Open in browser..."
+-cmd open http://localhost/TestPHP
+-cmd echo "----------------------------------------"
