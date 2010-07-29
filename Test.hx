@@ -93,6 +93,51 @@ class Test extends haxe.unit.TestCase{
 		this.assertEquals("012345", out.getBytes().toString());
 	}
 	
+	function testEndOfProgramError():Void {		
+		var out = new BytesOutput();
+		var error = null;
+		try {
+			var bf = new BrainFuck("[", out).run();
+		} catch (e:EndOfProgramError) {
+			error = e;
+		}
+		this.assertEquals(EndOfProgramError, Type.getClass(error));
+		
+		var error = null;
+		try {
+			var bf = new BrainFuck("+]", out).run();
+		} catch (e:EndOfProgramError) {
+			error = e;
+		}
+		this.assertEquals(EndOfProgramError, Type.getClass(error));
+	}
+	
+	function testEndOfInputError():Void {
+		var p = ",";
+		
+		var out = new BytesOutput();
+		var error = null;
+		try {
+			var bf = new BrainFuck(p, out).run();
+		} catch (e:EndOfInputError) {
+			error = e;
+		}
+		this.assertEquals(EndOfInputError, Type.getClass(error));
+	}
+	
+	function testInvalidMemoryAccessError():Void {
+		var p = "<.";
+		
+		var out = new BytesOutput();
+		var error = null;
+		try {
+			var bf = new BrainFuck(p, out).run();
+		} catch (e:InvalidMemoryAccessError) {
+			error = e;
+		}
+		this.assertEquals(InvalidMemoryAccessError, Type.getClass(error));
+	}
+	
 	static public function main():Void {
 		var runner = new haxe.unit.TestRunner();
 		runner.add(new Test());

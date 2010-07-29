@@ -20,6 +20,7 @@ import haxe.io.BytesOutput;
 import haxe.io.Input;
 import haxe.io.Output;
 import haxe.io.StringInput;
+import haxe.io.Eof;
 
 class BrainFuck {
 	public var memory:Bytes;
@@ -59,27 +60,53 @@ class BrainFuck {
 				--pointer;
 				moveToNextCommand();
 			case '+': //Increment the byte at the pointer.
-				memory.set(pointer,Std.int(Math.min(memory.get(pointer)+1,255)));
+				try {
+					memory.set(pointer,Std.int(Math.min(memory.get(pointer)+1,255)));
+				} catch (e:Dynamic) {
+					throw new InvalidMemoryAccessError();
+				}
 				moveToNextCommand();
 			case '-': //Decrement the byte at the pointer.
-				memory.set(pointer,Std.int(Math.max(memory.get(pointer)-1,0)));
+				try {
+					memory.set(pointer,Std.int(Math.max(memory.get(pointer)-1,0)));
+				} catch (e:Dynamic) {
+					throw new InvalidMemoryAccessError();
+				}
 				moveToNextCommand();
 			case '.': //Output the byte at the pointer.
-				output.writeByte(memory.get(pointer));
+				try {
+					output.writeByte(memory.get(pointer));
+				} catch (e:Dynamic) {
+					throw new InvalidMemoryAccessError();
+				}
 				moveToNextCommand();
 			case ',': //Input a byte and store it in the byte at the pointer.
-				var val = input.readByte();
+				var val;
+				try {
+					val = input.readByte();
+				} catch (e:Eof) {
+					throw new EndOfInputError();
+				}
 				if (showInput){
 					output.writeByte(val);
 				}
-				memory.set(pointer,val);
+				try {
+					memory.set(pointer,val);
+				} catch (e:Dynamic) {
+					throw new InvalidMemoryAccessError();
+				}
 				moveToNextCommand();
 			case '[': //Jump forward past the matching ] if the byte at the pointer is zero.
-				var val = memory.get(pointer);
+				var val;
+				try {
+					val = memory.get(pointer);
+				} catch (e:Dynamic) {
+					throw new InvalidMemoryAccessError();
+				}
 				if (val == 0){
 					var count = 1;
 					var c = moveToNextCommand();
-					while (c != null){
+					while (true){
 						if (c == '[') ++count;
 						if (c == ']') --count;
 						if (count == 0){
@@ -87,22 +114,33 @@ class BrainFuck {
 							break;
 						}
 						c = moveToNextCommand();
+						if (c == null) {
+							throw new EndOfProgramError();
+						}
 					}
 				} else {
 					moveToNextCommand();
 				}
 			case ']': //Jump backward to the matching [ unless the byte at the pointer is zero.
-				var val = memory.get(pointer);
+				var val;
+				try {
+					val = memory.get(pointer);
+				} catch (e:Dynamic) {
+					throw new InvalidMemoryAccessError();
+				}
 				if (val > 0){
 					var count = 1;
 					var c = moveToPrevCommand();
-					while (c != null){
+					while (true){
 						if (c == '[') --count;
 						if (c == ']') ++count;
 						if (count == 0){
 							break;
 						}
 						c = moveToPrevCommand();
+						if (c == null) {
+							throw new EndOfProgramError();
+						}
 					}
 				} else {
 					moveToNextCommand();
@@ -118,5 +156,35 @@ class BrainFuck {
 	
 	private function moveToPrevCommand():String {
 		return (--programPosition < 0) ? null : program.charAt(programPosition);
+	}
+}
+
+class EndOfProgramError {	
+	public function new():Void {
+		
+	}
+	
+	public function toString():String {
+		return "End of program reached";
+	}
+}
+
+class EndOfInputError {	
+	public function new():Void {
+		
+	}
+	
+	public function toString():String {
+		return "End of input reached";
+	}
+}
+
+class InvalidMemoryAccessError {	
+	public function new():Void {
+		
+	}
+	
+	public function toString():String {
+		return "Invalid memory access";
 	}
 }
