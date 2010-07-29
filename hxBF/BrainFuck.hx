@@ -31,20 +31,18 @@ class BrainFuck {
 
 	public var showInput:Bool;
 	
-	public function new(?input:Input, ?output:Output, ?memory:Bytes):Void {
+	public function new(?program:String = "", ?input:Input, ?output:Output, ?memory:Bytes):Void {
+		this.program = program;
 		this.input = input == null ? new StringInput("") : input;
 		this.output = output == null ? new BytesOutput() : output;
 		this.memory = memory == null ? Bytes.alloc(30000) : memory;
 
 		showInput = false;
-		program = "";
 		programPosition = 0;
 		pointer = 0;
 	}
 
-	public function run(?program:String = ""):BrainFuck {
-		this.program += program;
-		
+	public function run():BrainFuck {
 		while (programPosition < this.program.length){
 			runCommand(program.charAt(programPosition));
 		}
@@ -114,11 +112,11 @@ class BrainFuck {
 		}
 	}
 
-	inline private function moveToNextCommand():String {
+	private function moveToNextCommand():String {
 		return (++programPosition) >= program.length ? null : program.charAt(programPosition);
 	}
 	
-	inline private function moveToPrevCommand():String {
+	private function moveToPrevCommand():String {
 		return (--programPosition < 0) ? null : program.charAt(programPosition);
 	}
 }

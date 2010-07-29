@@ -28,7 +28,7 @@ class Test extends haxe.unit.TestCase{
 				>.";
 		
 		var out = new BytesOutput();
-		var bf = new BrainFuck(out).run(p);
+		var bf = new BrainFuck(p, out).run();
 		this.assertEquals("Hello World!\n", out.getBytes().toString());
 	}
 	
@@ -36,7 +36,7 @@ class Test extends haxe.unit.TestCase{
 		var p = ",>++++++[<-------->-],,[<+>-]<.";
 		
 		var out = new BytesOutput();
-		var bf = new BrainFuck(new StringInput("3+2"), out).run(p);
+		var bf = new BrainFuck(p, new StringInput("3+2"), out).run();
 		this.assertEquals("5", out.getBytes().toString());
 	}
 
@@ -47,7 +47,7 @@ class Test extends haxe.unit.TestCase{
 			>>>++++++[<++++++++>-]<.";
 		
 		var out = new BytesOutput();
-		var bf = new BrainFuck(new StringInput("2*4"), out).run(p);
+		var bf = new BrainFuck(p, new StringInput("2*4"), out).run();
 		this.assertEquals("8", out.getBytes().toString());
 	}
 
@@ -65,7 +65,7 @@ class Test extends haxe.unit.TestCase{
 			<<<<++++++[-<++++++++>]<.         Add 48 and print result";
 		
 		var out = new BytesOutput();
-		var bf = new BrainFuck(new StringInput("6/2"), out).run(p);
+		var bf = new BrainFuck(p, new StringInput("6/2"), out).run();
 		this.assertEquals("3", out.getBytes().toString());
 	}
 
@@ -73,7 +73,7 @@ class Test extends haxe.unit.TestCase{
 		var p = ",----------[----------------------.,----------]";
 		
 		var out = new BytesOutput();
-		var bf = new BrainFuck(new StringInput("lordalcol\n"), out).run(p);
+		var bf = new BrainFuck(p, new StringInput("lordalcol\n"), out).run();
 		this.assertEquals("LORDALCOL", out.getBytes().toString());
 	}
 
@@ -89,7 +89,7 @@ class Test extends haxe.unit.TestCase{
 			input a brainfuck program and its input separated by an exclamation point";
 		
 		var out = new BytesOutput();
-		var bf = new BrainFuck(new StringInput(",.+.>,++.>,+++.<<+++.+. !000"), out).run(p);
+		var bf = new BrainFuck(p, new StringInput(",.+.>,++.>,+++.<<+++.+. !000"), out).run();
 		this.assertEquals("012345", out.getBytes().toString());
 	}
 	
