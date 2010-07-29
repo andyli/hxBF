@@ -6,7 +6,7 @@ Based on the as3 version I've written some time ago: http://blog.onthewings.net/
 h1. Usage
 
 bc. import hxBF.BrainFuck;
-var bf = new BrainFuck(new haxe.io.StringInput("3+2")).run(",>++++++[<-------->-],,[<+>-]<.");
+var bf = new BrainFuck(",>++++++[<-------->-],,[<+>-]<.", new haxe.io.StringInput("3+2")).run();
 trace(cast(bf.output, haxe.io.BytesOutput).getBytes().toString()); //5
 
 h1. License

@@ -2,5 +2,5 @@
     <user name="andyli"/>
     <tag v="cross"/>
     <description>BrainFuck interpreter written in haXe.</description>
-    <version name="1.0">First release.</version>
+    <version name="1.1">API change. Added errors.</version>
 </project>
